@@ -1,1 +1,13 @@
-<p>log-in-page works!</p>
+<h1>Login</h1>
+
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+  <div>
+    <label for="email">Username:</label>
+    <input type="email" name="email" id="email" ngModel required>
+  </div>
+  <div>
+    <label for="psw">Password:</label>
+    <input type="password" name="password" id="psw" ngModel required>
+  </div>
+  <button type="submit">Login</button>
+</form>
