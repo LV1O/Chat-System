@@ -1,17 +1,30 @@
 <header>
-    <div class="header">
-      Your Groups
+  <div class="header">
+    Your Groups
+    <h3>Welcome, {{ username }}!</h3>
+  </div>
+</header>
+
+<nav>
+  <div class="sidebar">
+    <button class="logout" (click)="logout()">Log Out</button>
+  </div>
+</nav>
+
+<main>
+  <div class="content">
+    <div class="card">
+      <h3>Group 1</h3>
+      <button>Join</button>
     </div>
-  </header>
-  
-  <nav>
-    <div class="sidebar">
-      <a class="logout" href="#" (click)="logout()">Log Out</a>
+    <div class="card">
+      <h3>Group 2</h3>
+      <button>Join</button>
     </div>
-  </nav>
-  
-  <main>
-    <div class="content">
-      <router-outlet></router-outlet>
+    <div class="card">
+      <h3>Group 3</h3>
+      <button>Request Access</button>
     </div>
-  </main>
+    <router-outlet></router-outlet>
+  </div>
+</main>
