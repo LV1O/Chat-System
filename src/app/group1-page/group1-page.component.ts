@@ -6,17 +6,19 @@ import { Router } from '@angular/router';
   templateUrl: './group1-page.component.html',
   styleUrls: ['./group1-page.component.css']
 })
-export class Group1PageComponent implements OnInit {
-  username: string | null = '';
-  userRole: string = '';
-  message: string = ''; 
 
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    this.username = localStorage.getItem('username');
-    this.userRole = localStorage.getItem('userRole') || '';
-  }
+  export class Group1PageComponent implements OnInit {
+    username: string | null = '';
+    userRole: string = '';
+    message: string = ''; 
+  
+    constructor(private router: Router) {}
+  
+    ngOnInit(): void {
+      this.username = localStorage.getItem('username');
+      this.userRole = localStorage.getItem('role') || '';
+    }
+  
 
   back() {
     this.router.navigate(['/groups']);
