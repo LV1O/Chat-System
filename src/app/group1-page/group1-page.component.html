@@ -1,22 +1,28 @@
 <header>
-    <div class="header">
-      Group 1
-      <h3>Start chatting, {{ username }}!</h3>
+  <div class="header">
+    Group 1
+    <h3>Start chatting, {{ username }}!</h3>
+  </div>
+</header>
+
+<nav>
+  <div class="sidebar">
+    <button class="back" (click)="back()">Back</button>
+    
+    <div *ngIf="userRole === 'SuperAdmin'">
+      <button class="promote" (click)="promote()">Promote</button>
+      <button class="remove" (click)="remove()">Remove</button>
+      <button class="upgrade" (click)="upgrade()">Upgrade</button>
     </div>
-  </header>
-  
-  <nav>
-    <div class="sidebar">
-      <button class="back" (click)="back()">Back</button>
-    </div>
-  </nav>
-  
-  <main>
-    <div class="content">
-    </div>
-  
-    <div class="message-input">
-      <input type="text" [(ngModel)]="message" placeholder="Type a message!">
-      <button (click)="submitMessage()">Submit</button>
-    </div>
-  </main>
+  </div>
+</nav>
+
+<main>
+  <div class="content">
+  </div>
+
+  <div class="message-input">
+    <input type="text" [(ngModel)]="message" placeholder="Type a message!">
+    <button (click)="submitMessage()">Submit</button>
+  </div>
+</main>

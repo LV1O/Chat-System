@@ -12,10 +12,10 @@ export class LogInPageComponent {
   errorMessage: string = '';
 
   users = [
-    { email: 'SuperAdmin', password: '1' },
-    { email: 'GroupAdmin', password: '2' },
-    { email: 'user', password: '3' },
-    { email: 'SuperUser', password: '123' }
+    { email: 'SuperAdmin', password: '1', role: 'superadmin' },
+    { email: 'GroupAdmin', password: '2', role: 'groupadmin' },
+    { email: 'user', password: '3', role: 'user' },
+    { email: 'SuperUser', password: '123', role: 'superuser' }
   ];
 
   constructor(private router: Router) {}

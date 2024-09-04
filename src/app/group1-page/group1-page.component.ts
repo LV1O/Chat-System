@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,18 +6,20 @@ import { Router } from '@angular/router';
   templateUrl: './group1-page.component.html',
   styleUrls: ['./group1-page.component.css']
 })
-export class Group1PageComponent {
+export class Group1PageComponent implements OnInit {
   username: string | null = '';
+  userRole: string = '';
   message: string = ''; 
 
   constructor(private router: Router) {}
 
-  back() {
-    this.router.navigate(['/groups']);
-  }
-
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
+    this.userRole = localStorage.getItem('userRole') || '';
+  }
+
+  back() {
+    this.router.navigate(['/groups']);
   }
 
   submitMessage() {
@@ -27,5 +29,17 @@ export class Group1PageComponent {
     } else {
       alert('Please enter a message.');
     }
+  }
+
+  promote() {
+
+  }
+
+  remove() {
+
+  }
+
+  upgrade() {
+
   }
 }
