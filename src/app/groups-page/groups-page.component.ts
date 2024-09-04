@@ -11,6 +11,18 @@ export class GroupsPageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  goToGroup1Page() {
+    this.router.navigate(['/group1-page']);
+  }
+
+  goToGroup2Page() {
+    this.router.navigate(['/group2-page']);
+  }
+
+  goToGroup3Page() {
+    this.router.navigate(['/group3-page']);
+  }
+  
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
   }
