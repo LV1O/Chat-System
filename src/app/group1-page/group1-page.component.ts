@@ -32,16 +32,4 @@ import { Router } from '@angular/router';
       alert('Please enter a message.');
     }
   }
-
-  promote() {
-
-  }
-
-  remove() {
-
-  }
-
-  upgrade() {
-
-  }
 }

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class GroupsPageComponent implements OnInit {
   username: string | null = '';
+  userRole: string = '';
+  message: string = '';
 
   constructor(private router: Router) {}
 
@@ -25,6 +27,7 @@ export class GroupsPageComponent implements OnInit {
   
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
+    this.userRole = localStorage.getItem('role') || '';
   }
 
   logout() {

@@ -7,23 +7,44 @@
 
 <nav>
   <div class="sidebar">
+    
+    <div *ngIf="userRole === 'SuperAdmin'">
+      <button>Create Group</button>
+    </div>
     <button class="logout" (click)="logout()">Log Out</button>
   </div>
 </nav>
 
 <main>
   <div class="content">
+    
     <div class="card">
       <h3>Group 1</h3>
       <button (click)="goToGroup1Page()">Join</button>
+      <div *ngIf="userRole === 'SuperAdmin'">
+      <button>Remove Group</button>
+    </div>
+
     </div>
     <div class="card">
       <h3>Group 2</h3>
       <button (click)="goToGroup2Page()">Join</button>
+      <div *ngIf="userRole === 'SuperAdmin'">
+        <button>Remove Group</button>
+      </div>
     </div>
+
     <div class="card">
       <h3>Group 3</h3>
-      <button>Request Access</button>
+      <div *ngIf="userRole === 'User'">
+        <button >Request to Join!</button>
+      </div>
+
+      <div *ngIf="userRole === 'SuperAdmin'">
+        <button (click)="goToGroup1Page()">Join</button>
+        <button>Remove Group</button>
+      </div>
+
     </div>
   </div>
 </main>
