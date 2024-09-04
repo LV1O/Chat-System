@@ -1,1 +1,22 @@
-<p>group2-page works!</p>
+<header>
+    <div class="header">
+      Group 2
+      <h3>Start chatting, {{ username }}!</h3>
+    </div>
+  </header>
+  
+  <nav>
+    <div class="sidebar">
+      <button class="back" (click)="back()">Back</button>
+    </div>
+  </nav>
+  
+  <main>
+    <div class="content">
+    </div>
+  
+    <div class="message-input">
+      <input type="text" [(ngModel)]="message" placeholder="Type a message!">
+      <button (click)="submitMessage()">Submit</button>
+    </div>
+  </main>
