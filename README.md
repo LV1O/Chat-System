@@ -1,27 +1,30 @@
-# ChatApp
+# Log In Details
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+To test the permissions for each user, please use the following usernames and passwords for login:
 
-## Development server
+- `{ email: 'Lora', password: '1' }`
+- `{ email: 'Melissa', password: '2' }`
+- `{ email: 'James', password: '3' }`
+- `{ email: 'Super', password: '123' }`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# Documentation
 
-## Code scaffolding
+## Git Organisation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The frequency of git commits were not up to the standard I had hoped, I aimed to push commits after minor edits and tweaks, but instead, commits were only made after significant breakthroughs. I often got caught up in my work and forgot to commit frequently, resulting in lengthy commit messages, some commits even requiring extra comments.
 
-## Build
+## Description of Data Structures (Client and Server Side)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+In terms of data structures used to represent my entities , I've used simple JSON data structures. On the client side, I use a data.json file to define users and groups. In this file, the users array contains properties such as email, password, id, and role, which help manage user logins and roles and view permissions.
 
-## Running unit tests
+## Angular Architecture: Components, Services, Models, Routes
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The architecture of my Angular application is organized into several components, including LogInPageComponent, GroupsPageComponent, Group1PageComponent, Group2PageComponent, and Group3PageComponent. Each component comes with its own HTML and CSS files, which manage the styling and layout of the page. Accompanying each component is a corresponding .component.ts file that defines the logic and functionality specific to that component. The DataService.ts file handles the fetching and management of data from APIs or files. Additionally, the app-routing.module.ts file configures the navigation paths and specifies which components are rendered for each route.
 
-## Running end-to-end tests
+## Node Server Architecture: Modules, Functions, Files, Global Variables
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+The Node server configuration was generated during the app setup, it uses Express to manage routes and serve static files. Cors is also included to manage cross origin requests.
 
-## Further help
+## Interaction Between Client and Server
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+When a user logs in, the angular component sends a request to the server to validate the log in details. The server checks the data and responds with navigation to the groups page or an error message Based on the login outcome the client updates the UI accordingly. SuperAdmins have access to additional features compared to group admins and regular users. For instance, if a SuperAdmin is logged in, each group will display a join button. If a regular user is logged in, they will see a request access button under Group 3. Furthermore, upon joining the group SuperAdmins and GroupAdmins have access to a wider range of features than the regular user who at this point in development can only see the back button.
