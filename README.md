@@ -2,10 +2,10 @@
 
 To test the permissions for each user, please use the following usernames and passwords for login:
 
-- `{ email: 'Lora', password: '1' }`
-- `{ email: 'Melissa', password: '2' }`
-- `{ email: 'James', password: '3' }`
-- `{ email: 'Super', password: '123' }`
+- SuperAdmin  `{ email: 'Lora', password: '1' }` 
+- GroupAdmin1  `{ email: 'Melissa', password: '2' }`
+- User  `{ email: 'James', password: '3' }`
+- SuperUser `{ email: 'Super', password: '123' }`
 
 # Documentation
 
