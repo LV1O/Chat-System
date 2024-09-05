@@ -3,6 +3,7 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
+import cors from 'cors';
 import AppServerModule from './src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
@@ -11,6 +12,8 @@ export function app(): express.Express {
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
+
+  server.use(cors());
 
   const commonEngine = new CommonEngine();
 
