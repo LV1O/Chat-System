@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'chat-app';
+export class AppComponent implements OnInit {
+  users: any[] = [];
+
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.getUsers().subscribe(
+      (data) => {
+        this.users = data.users;
+        console.log('Users data loaded:', this.users);
+      }
+    );
+  }
 }

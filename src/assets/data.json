@@ -1,0 +1,13 @@
+{
+    "users": [
+      { "email": "Lora", "password": "1", "id": "1", "role": "SuperAdmin" },
+      { "email": "Melissa", "password": "2", "id": "2", "role": "GroupAdmin1" },
+      { "email": "James", "password": "3", "id": "3", "role": "User" },
+      { "email": "Super", "password": "123", "id": "4", "role": "SuperAdmin" }
+    ],
+    "groups": [
+      { "id": "1", "name": "Group 1" },
+      { "id": "2", "name": "Group 2" },
+      { "id": "3", "name": "Group 3" }
+    ]
+  }

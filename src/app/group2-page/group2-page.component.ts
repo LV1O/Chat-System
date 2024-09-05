@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-group1-page',
+  selector: 'app-group2-page',
   templateUrl: './group2-page.component.html',
   styleUrls: ['./group2-page.component.css']
 })

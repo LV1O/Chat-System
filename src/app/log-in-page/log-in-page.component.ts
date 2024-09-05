@@ -1,32 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-log-in-page',
   templateUrl: './log-in-page.component.html',
   styleUrls: ['./log-in-page.component.css']
 })
-export class LogInPageComponent {
+export class LogInPageComponent implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  users: any[] = []; 
 
-  users = [
-    { email: 'Lora', password: '1', role: 'SuperAdmin' },
-    { email: 'Melissa', password: '2', role: 'GroupAdmin1' },
-    { email: 'James', password: '3', role: 'User' },
-    { email: 'SuperUser', password: '123', role: 'SuperUser' }
-  ];
+  constructor(private router: Router, private dataService: DataService) {}
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.dataService.getUsers().subscribe({
+      next: (data) => {
+        this.users = data.users;
+      },
+    });
+  }
 
   onSubmit() {
     const user = this.users.find(u => u.email === this.email && u.password === this.password);
     if (user) {
-
       localStorage.setItem('username', this.email);
       localStorage.setItem('role', user.role);
-     
       this.router.navigate(['/groups']);
     } else {
       this.errorMessage = 'Invalid username or password';

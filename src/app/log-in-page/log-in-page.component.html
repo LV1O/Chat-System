@@ -1,16 +1,17 @@
-<h1>Login</h1>
-
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  <div>
-    <label for="email">Username:</label>
-    <input type="email" name="email" id="email" [(ngModel)]="email" required>
-  </div>
-  <div>
-    <label for="psw">Password:</label>
-    <input type="password" name="password" id="psw" [(ngModel)]="password" required>
-  </div>
-  <button type="submit">Login</button>
-  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-  </div>
-</form>
+<div class="container">
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <h1>Chat-App</h1>
+    <div>
+      <label for="email">Username:</label>
+      <input type="email" name="email" id="email" [(ngModel)]="email" required>
+    </div>
+    <div>
+      <label for="psw">Password:</label>
+      <input type="password" name="password" id="psw" [(ngModel)]="password" required>
+    </div>
+    <button type="submit">Login</button>
+    <div *ngIf="errorMessage" class="alert">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
