@@ -9,7 +9,7 @@
   <div class="sidebar">
     <button class="back" (click)="back()">Back</button>
     <button>Remove Group</button>
-    
+
     <div *ngIf="userRole === 'SuperAdmin'">
       <button>Promote to Group Admin</button>
       <button>Remove User</button>
@@ -21,17 +21,20 @@
       <button>Remove User</button>
       <button>Ban User</button>
     </div>
-
-
   </div>
 </nav>
 
 <main>
   <div class="content">
+    <div class="message-list">
+      <div *ngFor="let msg of messages" class="message-item">
+        <strong>{{ msg.sender }}:</strong> {{ msg.messageContent }}
+      </div>
+    </div>
   </div>
 
   <div class="message-input">
-    <input type="text" [(ngModel)]="message" placeholder="Type a message!">
+    <input type="text" [(ngModel)]="message" placeholder="Type a message!" />
     <button (click)="submitMessage()">Submit</button>
   </div>
 </main>
