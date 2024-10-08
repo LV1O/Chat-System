@@ -12,7 +12,7 @@ export class PeerService {
   constructor() {
     // Initialize PeerJS connection
     this.myPeer = new Peer(this.myPeerId, {
-      host: 'your-server-url-here',  // Replace with your actual server URL
+      host: 'https://localhost:3000',  // Replace with your actual server URL
       port: 3001,
       path: '/',
     });

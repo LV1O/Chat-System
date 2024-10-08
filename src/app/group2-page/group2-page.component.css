@@ -1,76 +1,155 @@
 body {
-    display: flex;
-    min-height: 100vh;
-    margin: 0;
-    flex-direction: column;
-  }
-  
-  header {
-    background-color: #6ebae6;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
-    color: white;
-  }
-  
-  nav {
-    background-color: #b8d0e0;
-    padding: 15px;
-    width: 200px;
-    color: white;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-  }
-  
-  .sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  main {
-    display: flex;
-    flex-grow: 1;
-    margin-left: 200px; 
-  }
-  
-  .content {
-    display: flex;
-    justify-content: left;
-    align-items: flex-start; 
-    width: 100%;
-    padding: 20px; 
-  }
-  
-  button {
-    background-color: #4ca3af;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  flex-direction: column;
+}
 
-  .message-input {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 75%; 
-    background-color: white;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .message-input input {
-    flex: 1;
-    padding: 8px;
-  }
+header {
+  background-color: #6ebae6;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  color: white;
+}
+
+nav {
+  background-color: #b8d0e0;
+  padding: 15px;
+  width: 200px;
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column; /* Align buttons vertically */
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+  margin-left: 200px; 
+}
+
+.content {
+  display: flex;
+  flex-direction: column; /* Align items vertically */
+  justify-content: flex-start; 
+  width: 100%;
+  padding: 20px; 
+}
+
+button {
+  background-color: #4ca3af;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.icon-button {
+  background: none; /* No background for icon buttons */
+  border: none; /* Remove border */
+  cursor: pointer;
+  color: #4ca3af; /* Icon color */
+  padding: 10px; /* Space around buttons */
+  display: flex; /* Center the icon and text */
+  align-items: center; /* Align icon and text vertically */
+  margin-bottom: 10px; /* Space between buttons */
+  font-size: 16px; /* Adjust text size */
+}
+
+.icon-button i {
+  margin-right: 8px; /* Space between icon and text */
+}
+
+.icon-button:hover {
+  color: #3a8c98; /* Darker color on hover */
+}
+
+.video-grid {
+  display: flex;
+  flex-wrap: wrap; /* Allow videos to wrap */
+}
+
+.video-element {
+  width: 320px; /* Set desired width */
+  height: auto; /* Maintain aspect ratio */
+  margin: 10px; /* Space between videos */
+}
+
+.message-input {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 75%; 
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-input-area {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Make it take full width */
+}
+
+.message-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc; /* Border for input */
+  border-radius: 5px; /* Rounded corners for input */
+  margin-right: 10px; /* Space between input and button */
+}
+
+.message-list {
+  margin-bottom: 60px; /* Space for the input area */
+}
+
+.message-item {
+  margin: 10px 0; /* Space between messages */
+}
+
+.message-sent {
+  text-align: right; /* Align sent messages to the right */
+}
+
+.message-bubble {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 15px; /* Rounded corners */
+  max-width: 60%; /* Limit the width of the message */
+  color: white; /* Text color for messages */
+  word-wrap: break-word; /* Ensure long words wrap */
+}
+
+.message-sent .message-bubble {
+  background-color: #4ca3af; /* Background color for sent messages */
+}
+
+.message-received {
+  text-align: left; /* Align received messages to the left */
+}
+
+.message-received .message-bubble {
+  background-color: #e0e0e0; /* Background color for received messages */
+  color: black; /* Text color for received messages */
+}
