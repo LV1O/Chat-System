@@ -1,35 +1,18 @@
-<header>
-    <div class="header">
-      Group 2
-      <h3>Start chatting, {{ username }}!</h3>
-    </div>
-  </header>
-  
-  <nav>
-    <div class="sidebar">
-      <button class="back" (click)="back()">Back</button>
-    </div>
+<div class="row p-2">
+  <button mat-raised-button color="primary" class="m-2" [disabled]="isCallStarted" (click)="streamCamera()">Stream with Camera</button>
+  <button mat-raised-button class="m-2" [disabled]="isCallStarted" (click)="streamScreen()">Stream with Screen</button>
+  <button mat-raised-button color="warn" class="m-2" [disabled]="!isCallStarted" (click)="endCall()">End Call</button>
+</div>
 
-    <div *ngIf="userRole === 'SuperAdmin'">
-      <button>Promote to Group Admin</button>
-      <button>Remove User</button>
-      <button>Upgrade User to SuperUser</button>
-    </div>
+<h2>Peers</h2>
+<ul>
+  <li *ngFor="let peerId of peerList" (click)="calling(peerId)">
+    <span>{{ peerId }}</span>
+  </li>
+</ul>
 
-    <div *ngIf="userRole === 'GroupAdmin1'">
-      <button>Create Channel</button>
-      <button>Remove User</button>
-      <button>Ban User</button>
-    </div>
-    
-  </nav>
-  
-  <main>
-    <div class="content">
-    </div>
-  
-    <div class="message-input">
-      <input type="text" [(ngModel)]="message" placeholder="Type a message!">
-      <button (click)="submitMessage()">Submit</button>
-    </div>
-  </main>
+<div class="video-grid">
+  <div *ngFor="let video of videos">
+    <video [srcObject]="video.srcObject" controls autoplay [muted]="video.muted"></video>
+  </div>
+</div>

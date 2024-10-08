@@ -18,9 +18,9 @@ export class Group1PageComponent implements OnInit {
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
     this.userRole = localStorage.getItem('role') || '';
-  
+
     // Listen for messages from Group 1
-    this.socketService.receiveMessages('group1').subscribe({
+    this.socketService.receiveMessages().subscribe({
       next: (message) => {
         this.messages.push(message);  // Add the received message to the list
       },
@@ -41,11 +41,9 @@ export class Group1PageComponent implements OnInit {
         messageContent: this.message,
         sender: this.username
       };
-  
+
       // Send the message via the socket service
       this.socketService.sendMessage(messageData);
-      console.log('Message sent:', messageData);  // Add this for debugging
-  
       this.message = '';  // Clear the input field
     } else {
       alert('Please enter a message.');

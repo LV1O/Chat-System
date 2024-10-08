@@ -14,15 +14,15 @@ export class GroupsPageComponent implements OnInit {
   constructor(private router: Router) {}
 
   goToGroup1Page() {
-    this.router.navigate(['/group1-page']);
+    this.router.navigate(['/group1']); // Adjusted path for Group 1
   }
 
   goToGroup2Page() {
-    this.router.navigate(['/group2-page']);
+    this.router.navigate(['/group2']); // Adjusted path for Group 2
   }
 
   goToGroup3Page() {
-    this.router.navigate(['/group3-page']);
+    this.router.navigate(['/group3']); // Adjusted path for Group 3
   }
   
   ngOnInit(): void {
@@ -33,6 +33,6 @@ export class GroupsPageComponent implements OnInit {
   logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('username'); 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']); // Redirect to login on logout
   }
 }

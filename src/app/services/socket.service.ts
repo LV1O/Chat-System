@@ -1,29 +1,46 @@
 import { Injectable } from '@angular/core';
-import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { io } from 'socket.io-client';
+
+const SERVER_URL = 'https://localhost:3000';  // Replace with your actual server URL
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SocketService {
-  private socket: Socket;
-  private SERVER_URL = 'http://localhost:4000';  // Your backend server URL
+  public socket: any;
 
   constructor() {
-    // Connect to Socket.IO server
-    this.socket = io(this.SERVER_URL);
+    this.socket = io(SERVER_URL, {
+      withCredentials: true,  // Use credentials if needed
+      transports: ['websocket']  // Force WebSocket transport
+    });
   }
 
-  // Send a message to the server
-  sendMessage(message: { groupId: string, messageContent: string, sender: string }) {
+  // Emit the peer ID to the server
+  peerID(message: string) {
+    this.socket.emit('peerID', message);
+  }
+
+  // Receive peer ID from the server
+  getPeerID() {
+    return new Observable((observer) => {
+      this.socket.on('peerID', (data: string) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  // Send chat message
+  sendMessage(message: any) {
     this.socket.emit('message', message);
   }
 
-  // Listen for messages from a specific group
-  receiveMessages(groupId: string): Observable<any> {
+  // Listen for incoming chat messages
+  receiveMessages() {
     return new Observable((observer) => {
-      this.socket.on(`message-${groupId}`, (message) => {
-        observer.next(message);
+      this.socket.on('message', (data: any) => {
+        observer.next(data);
       });
     });
   }
