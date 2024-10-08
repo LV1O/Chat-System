@@ -39,9 +39,10 @@ export class Group1PageComponent implements OnInit {
       const messageData = {
         groupId: 'group1',
         messageContent: this.message,
-        sender: this.username
+        sender: this.username,
+        timestamp: new Date() // Add the current timestamp
       };
-
+  
       // Send the message via the socket service
       this.socketService.sendMessage(messageData);
       this.message = '';  // Clear the input field

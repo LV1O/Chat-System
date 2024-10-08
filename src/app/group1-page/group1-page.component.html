@@ -27,8 +27,19 @@
 <main>
   <div class="content">
     <div class="message-list">
-      <div *ngFor="let msg of messages" class="message-item">
-        <strong>{{ msg.sender }}:</strong> {{ msg.messageContent }}
+      <!-- Apply chat bubble classes based on the sender -->
+      <div *ngFor="let msg of messages" 
+           class="message-item" 
+           [ngClass]="{'message-sent': msg.sender === username, 'message-received': msg.sender !== username}">
+        <!-- Message header showing sender name and timestamp outside the bubble -->
+        <div class="message-header">
+          <span>{{ msg.sender }}</span>
+          <span>{{ msg.timestamp | date:'short' }}</span>
+        </div>
+        <!-- Message bubble -->
+        <div class="message-bubble">
+          {{ msg.messageContent }}
+        </div>
       </div>
     </div>
   </div>
@@ -38,4 +49,3 @@
     <button (click)="submitMessage()">Submit</button>
   </div>
 </main>
-
