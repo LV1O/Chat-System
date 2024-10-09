@@ -1,28 +1,67 @@
-body, html {
-    height: 100%;
-    margin: 0;
-  }
-  
-  .container {
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: #2b2b2b;
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #4c6077be;
+  text-align: center;
+  color: white;
+}
+
+div {
+  margin-bottom: 40px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+button {
+  padding: 10px;
+  background-color: #3f8cb991; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #4577a0b2; 
+}
+
+:host {
+    background-image: url('/assets/BackgroundMoving.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 98vh; /* Using 98vh to avoid scroll */
+    background-color: #2b2b2b; /* Set a grey color that matches the GIF */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    padding: 30px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #6ebae6;
-    text-align: center;
-    color: white;
-  }
-  
-  div {
-    margin-bottom: 40px;
-  }
-  
+}
