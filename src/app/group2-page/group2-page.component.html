@@ -1,97 +1,100 @@
-<header>
-  <div class="header">
-    <h1>Group 2</h1>
-    <h3>Start chatting, {{ username }}!</h3>
-  </div>
-</header>
-
-<nav>
-  <div class="sidebar">
-    <button class="icon-button" (click)="back()">
-      <i class="fas fa-arrow-left"></i> <!-- Back Icon -->
-    </button>
-    <button class="icon-button">
-      <i class="fas fa-user-minus"></i> <!-- Remove Group Icon -->
-      <span>Remove Group</span>
-    </button>
-
-    <div *ngIf="userRole === 'SuperAdmin'">
-      <button class="icon-button">
-        <i class="fas fa-user-plus"></i> <!-- Promote to Group Admin Icon -->
-        <span>Promote to Admin</span>
-      </button>
-      <button class="icon-button">
-        <i class="fas fa-user-times"></i> <!-- Remove User Icon -->
-        <span>Remove User</span>
-      </button>
-      <button class="icon-button">
-        <i class="fas fa-user-shield"></i> <!-- Upgrade User to SuperUser Icon -->
-        <span>Upgrade to SuperUser</span>
-      </button>
-    </div>
-
-    <div *ngIf="userRole === 'GroupAdmin1'">
-      <button class="icon-button">
-        <i class="fas fa-plus"></i> <!-- Create Channel Icon -->
-        <span>Create Channel</span>
-      </button>
-      <button class="icon-button">
-        <i class="fas fa-user-times"></i> <!-- Remove User Icon -->
-        <span>Remove User</span>
-      </button>
-      <button class="icon-button">
-        <i class="fas fa-user-slash"></i> <!-- Ban User Icon -->
-        <span>Ban User</span>
-      </button>
-    </div>
-  </div>
-</nav>
-
-
-<main>
-  <div class="content">
-    <ul>
-      <li *ngFor="let peerId of peerList" (click)="calling(peerId)">
-        <span>{{ peerId }}</span>
-      </li>
-    </ul>
-
-    <div class="video-grid">
-      <div *ngFor="let video of videos">
-        <video class="video-element" [srcObject]="video.srcObject" controls autoplay [muted]="video.muted"></video>
+<body>
+  <div class="background">
+    <header>
+      <div class="header">
+        <h1>Group 2</h1>
+        <h3>Start chatting, {{ username }}!</h3>
       </div>
-    </div>
+    </header>
 
-    <div class="message-list">
-      <div *ngFor="let msg of messages" 
-           class="message-item" 
-           [ngClass]="{'message-sent': msg.sender === username, 'message-received': msg.sender !== username}">
-        <div class="message-header">
-          <span>{{ msg.sender }}</span>
-          <span>{{ msg.timestamp | date:'short' }}</span>
+    <nav>
+      <div class="sidebar">
+        <button class="icon-button" (click)="back()">
+          <i class="fas fa-arrow-left"></i> <!-- Back Icon -->
+        </button>
+        <button class="icon-button">
+          <i class="fas fa-user-minus"></i> <!-- Remove Group Icon -->
+          <span>Remove Group</span>
+        </button>
+
+        <div *ngIf="userRole === 'SuperAdmin'">
+          <button class="icon-button">
+            <i class="fas fa-user-plus"></i> <!-- Promote to Group Admin Icon -->
+            <span>Promote to Admin</span>
+          </button>
+          <button class="icon-button">
+            <i class="fas fa-user-times"></i> <!-- Remove User Icon -->
+            <span>Remove User</span>
+          </button>
+          <button class="icon-button">
+            <i class="fas fa-user-shield"></i> <!-- Upgrade User to SuperUser Icon -->
+            <span>Upgrade to SuperUser</span>
+          </button>
         </div>
-        <div class="message-bubble">
-          {{ msg.messageContent }}
+
+        <div *ngIf="userRole === 'GroupAdmin1'">
+          <button class="icon-button">
+            <i class="fas fa-plus"></i> <!-- Create Channel Icon -->
+            <span>Create Channel</span>
+          </button>
+          <button class="icon-button">
+            <i class="fas fa-user-times"></i> <!-- Remove User Icon -->
+            <span>Remove User</span>
+          </button>
+          <button class="icon-button">
+            <i class="fas fa-user-slash"></i> <!-- Ban User Icon -->
+            <span>Ban User</span>
+          </button>
         </div>
       </div>
-    </div>
+    </nav>
 
-    <div class="message-input">
-      <div class="chat-input-area">
-        <button class="icon-button" (click)="streamCamera()" [disabled]="isCallStarted">
-          <i class="fas fa-video"></i>
-        </button>
-        <button class="icon-button" (click)="streamScreen()" [disabled]="isCallStarted">
-          <i class="fas fa-desktop"></i>
-        </button>
-        <button class="icon-button" (click)="endCall()" [disabled]="!isCallStarted">
-          <i class="fas fa-phone-slash"></i>
-        </button>
-        <input type="text" [(ngModel)]="message" placeholder="Type a message!" />
-        <button class="icon-button" (click)="submitMessage()">
-          <i class="fas fa-paper-plane"></i>
-        </button>
+    <main>
+      <div class="content">
+        <ul>
+          <li *ngFor="let peerId of peerList" (click)="calling(peerId)">
+            <span>{{ peerId }}</span>
+          </li>
+        </ul>
+
+        <div class="video-grid">
+          <div *ngFor="let video of videos">
+            <video class="video-element" [srcObject]="video.srcObject" controls autoplay [muted]="video.muted"></video>
+          </div>
+        </div>
+
+        <div class="message-list">
+          <div *ngFor="let msg of messages" 
+               class="message-item" 
+               [ngClass]="{'message-sent': msg.sender === username, 'message-received': msg.sender !== username}">
+            <div class="message-header">
+              <span>{{ msg.sender }}</span>
+              <span>{{ msg.timestamp | date:'short' }}</span>
+            </div>
+            <div class="message-bubble">
+              {{ msg.messageContent }}
+            </div>
+          </div>
+        </div>
+
+        <div class="message-input">
+          <div class="chat-input-area">
+            <button class="icon-button" (click)="streamCamera()" [disabled]="isCallStarted">
+              <i class="fas fa-video"></i>
+            </button>
+            <button class="icon-button" (click)="streamScreen()" [disabled]="isCallStarted">
+              <i class="fas fa-desktop"></i>
+            </button>
+            <button class="icon-button" (click)="endCall()" [disabled]="!isCallStarted">
+              <i class="fas fa-phone-slash"></i>
+            </button>
+            <input type="text" [(ngModel)]="message" placeholder="Type a message!" />
+            <button class="icon-button" (click)="submitMessage()">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
-</main>
+</body>

@@ -1,20 +1,32 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-image: url('/assets/Groupss.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+
 body {
   display: flex;
-  min-height: 100vh;
-  margin: 0;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 header {
-  background-color: #6ebae6;
+  background-color: rgba(116, 157, 204, 0.75);/* Semi-transparent to show background */
   padding: 15px;
   text-align: center;
   font-size: 24px;
   color: white;
+  width: 100%;
 }
 
 nav {
-  background-color: #b8d0e0;
+  background-color: rgba(116, 157, 204, 0.75); /* Semi-transparent to show background */
   padding: 15px;
   width: 200px;
   color: white;
@@ -24,46 +36,45 @@ nav {
   bottom: 0;
 }
 
-.sidebar a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 10px;
-}
-
 main {
   display: flex;
   flex-grow: 1;
-  margin-left: 200px; 
+  margin-left: 200px;
 }
 
 .content {
   display: flex;
-  justify-content: left;
-  align-items: flex-start; 
+  justify-content: centre;
+  align-items: flex-start;
   width: 100%;
-  padding: 20px; 
+  padding: 50px;
+  position: relative; 
 }
 
 .card {
-  background-color: #f9f9f9;
+  background-color: rgba(95, 93, 85, 0.76); 
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 20px;
   padding: 20px;
-  margin: 10px;
+  margin: 15px;
   text-align: center;
-  width: 200px; 
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 button {
-  background-color: #4ca3af;
+  background-color: #3e5f64;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 30px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
   margin-top: 10px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: #344547; /* Slightly darker on hover */
 }

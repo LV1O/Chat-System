@@ -55,7 +55,7 @@ button:hover {
 }
 
 :host {
-    background-image: url('/assets/BackgroundMoving.gif');
+    background-image: url('/assets/BackgroundMoving5.gif');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
