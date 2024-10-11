@@ -17,7 +17,7 @@
           <span>Remove Group</span>
         </button>
 
-        <div *ngIf="userRole === 'SuperAdmin'">
+        <div *ngIf="userRole === 'Super Admin'">
           <button class="icon-button">
             <i class="fas fa-user-plus"></i> <!-- Promote to Group Admin Icon -->
             <span>Promote to Admin</span>
@@ -27,12 +27,12 @@
             <span>Remove User</span>
           </button>
           <button class="icon-button">
-            <i class="fas fa-user-shield"></i> <!-- Upgrade User to SuperUser Icon -->
+            <i class="fas fa-user-shield"></i> <!-- Upgrade to SuperUser Icon -->
             <span>Upgrade to SuperUser</span>
           </button>
         </div>
 
-        <div *ngIf="userRole === 'GroupAdmin1'">
+        <div *ngIf="userRole === 'Group Admin'">
           <button class="icon-button">
             <i class="fas fa-plus"></i> <!-- Create Channel Icon -->
             <span>Create Channel</span>
@@ -51,32 +51,43 @@
 
     <main>
       <div class="content">
+
+        <!-- Display connected peer IDs -->
         <ul>
           <li *ngFor="let peerId of peerList" (click)="calling(peerId)">
             <span>{{ peerId }}</span>
           </li>
         </ul>
 
+        <!-- Video grid for streaming -->
         <div class="video-grid">
           <div *ngFor="let video of videos">
             <video class="video-element" [srcObject]="video.srcObject" controls autoplay [muted]="video.muted"></video>
           </div>
         </div>
 
+        <!-- Message list -->
         <div class="message-list">
           <div *ngFor="let msg of messages" 
                class="message-item" 
                [ngClass]="{'message-sent': msg.sender === username, 'message-received': msg.sender !== username}">
             <div class="message-header">
-              <span>{{ msg.sender }}</span>
-              <span>{{ msg.timestamp | date:'short' }}</span>
+              <strong>{{ msg.sender }}</strong>
+              <small>{{ msg.timestamp | date:'short' }}</small>
+              <div class="profile-pic-box" (click)="fileInput.click()">
+                <img *ngIf="msg.profileImageUrl" [src]="msg.profileImageUrl" alt="Profile Image" class="profile-image" />
+                <input type="file" (change)="onProfileImageSelected($event, msg)" accept="image/*" hidden #fileInput />
+              </div>              
             </div>
             <div class="message-bubble">
               {{ msg.messageContent }}
+              <!-- Display uploaded image -->
+              <img *ngIf="msg.imageUrl" [src]="msg.imageUrl" alt="Uploaded Image" class="uploaded-image" />
             </div>
           </div>
         </div>
 
+        <!-- Input for sending messages and uploading images -->
         <div class="message-input">
           <div class="chat-input-area">
             <button class="icon-button" (click)="streamCamera()" [disabled]="isCallStarted">
@@ -88,13 +99,21 @@
             <button class="icon-button" (click)="endCall()" [disabled]="!isCallStarted">
               <i class="fas fa-phone-slash"></i>
             </button>
+
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" hidden #fileInput />
+            <button class="icon-button" (click)="fileInput.click()">
+              <i class="fas fa-plus"></i> <!-- Add Image Icon -->
+            </button>
+
             <input type="text" [(ngModel)]="message" placeholder="Type a message!" />
             <button class="icon-button" (click)="submitMessage()">
               <i class="fas fa-paper-plane"></i>
             </button>
           </div>
         </div>
+
       </div>
     </main>
   </div>
 </body>
+

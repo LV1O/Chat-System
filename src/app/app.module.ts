@@ -10,6 +10,7 @@ import { Group1PageComponent } from './group1-page/group1-page.component';
 import { Group2PageComponent } from './group2-page/group2-page.component';
 import { Group3PageComponent } from './group3-page/group3-page.component';
 import { DataService } from './data.service';
+import { ImguploadService } from './services/imgupload.service'; // Import ImguploadService
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { DataService } from './data.service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [DataService],
+  providers: [DataService, ImguploadService], // Add ImguploadService to providers array
   bootstrap: [AppComponent]
 })
 export class AppModule { }

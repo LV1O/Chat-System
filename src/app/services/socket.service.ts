@@ -12,8 +12,8 @@ export class SocketService {
 
   constructor() {
     this.socket = io(SERVER_URL, {
-      withCredentials: true,  // Use credentials if needed
-      transports: ['websocket']  // Force WebSocket transport
+      withCredentials: true,
+      transports: ['websocket']
     });
   }
 
@@ -44,4 +44,31 @@ export class SocketService {
       });
     });
   }
+
+  receivePreviousMessages() {
+    return new Observable((observer) => {
+      this.socket.on('previousMessages', (data: any) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  // Upload image
+  uploadImage(formData: FormData): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.emit('uploadImage', formData, (response: any) => {
+        observer.next(response);
+      });
+    });
+  }
+
+  // Upload profile image
+  uploadProfileImage(formData: FormData): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.emit('uploadProfileImage', formData, (response: any) => {
+        observer.next(response);
+      });
+    });
+  }
 }
+

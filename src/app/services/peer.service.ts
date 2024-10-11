@@ -10,11 +10,12 @@ export class PeerService {
   public myPeer: any;
 
   constructor() {
-    // Initialize PeerJS connection
+    // Initialize PeerJS connection with HTTPS and WebSocket (wss)
     this.myPeer = new Peer(this.myPeerId, {
-      host: 'https://localhost:3000',  // Replace with your actual server URL
-      port: 3001,
-      path: '/',
+      host: 'localhost',
+      port: 3001,        // Use the port where your PeerJS server is running
+      path: '/',         // Update path if needed, e.g., '/peerjs' if set on your PeerJS server
+      secure: true,      // Set secure to true because you're using HTTPS
     });
 
     // Log the peer ID when the connection is established
@@ -28,3 +29,4 @@ export class PeerService {
     this.myPeer.reconnect();
   }
 }
+

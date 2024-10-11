@@ -1,6 +1,6 @@
 /* Background styling for the entire app */
 .background {
-  background-image: url('/assets/Groupss.jpg'); /* Make sure the path is correct */
+  background-image: url('/assets/Groupss.jpg'); /* Ensure the path is correct */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -95,6 +95,13 @@ nav .sidebar button {
   color: black;
 }
 
+/* New styles for images */
+.uploaded-image {
+  max-width: 100%; /* Ensures the image does not overflow */
+  border-radius: 10px; /* Rounds the corners of the image */
+  margin-top: 5px; /* Adds space above the image */
+}
+
 /* Chat input area styling */
 .message-input {
   position: fixed;
@@ -125,3 +132,22 @@ nav .sidebar button {
 .icon-button:hover {
   color: #3a8c98;
 }
+
+.profile-pic-box {
+  width: 40px; 
+  height: 40px; 
+  border-radius: 10%; /* Makes it circular */
+  overflow: hidden; /* Ensures the image fits within the box */
+  display: inline-flex; /* Aligns items inline */
+  justify-content: center; /* Centers the image */
+  align-items: center; /* Centers the image */
+  cursor: pointer; /* Indicates it's clickable */
+  border: 2px solid #4ca3af; /* Border around the profile picture */
+  margin-right: 10px; /* Adds space between the profile picture and the message */
+}
+
+.profile-image {
+  width: 100%; /* Makes image fill the box */
+  height: auto; /* Maintains aspect ratio */
+}
+
