@@ -9,22 +9,54 @@ To test the permissions for each user, please use the following usernames and pa
 
 # Documentation
 
-## Git Organisation
+# GitHub Structure
 
-The frequency of git commits were not up to the standard I had hoped, I aimed to push commits after minor edits and tweaks, but instead, commits were only made after significant breakthroughs. I often got caught up in my work and forgot to commit frequently, resulting in lengthy commit messages, some commits even requiring extra comments.
+## Branches
+The repository features one branch named, `main`. It has been my main development branch during the development of the assignment.
 
-## Description of Data Structures (Client and Server Side)
+## Folders/files
+- `cypress`: Includes files related to end-to-end testing (e2e)
+- `data/db`: This folder is dedicated to database-related files, which help backend data handling.
+- `src`: This folder contains the main source code of the application, with components and services related to Angular development. This is where most of the front-end logic is located.
+- `cert.pem` & `key.pem`: SSL certificate and private key files for securing HTTPS connections.
+- `server.js`, `server.ts`: These files handle the server logic and Socket.IO integration.
 
-In terms of data structures used to represent my entities , I've used simple JSON data structures. On the client side, I use a data.json file to define users and groups. In this file, the users array contains properties such as email, password, id, and role, which help manage user logins and roles and view permissions.
+## Commits and troubleshooting
+Throughout the course of development, there have been 59 commits made to the repository. Frequent commits helped me troubleshoot and revert changes when code-breaking bugs arose. Had I not had this version control in place, I wouldn’t have been able to successfully complete the assignment. Commits were not made as frequently as I would have liked; however, I often got caught up coding in long sessions that I had forgotten to update the GitHub.
 
-## Angular Architecture: Components, Services, Models, Routes
+---
 
-The architecture of my Angular application is organized into several components, including LogInPageComponent, GroupsPageComponent, Group1PageComponent, Group2PageComponent, and Group3PageComponent. Each component comes with its own HTML and CSS files, which manage the styling and layout of the page. Accompanying each component is a corresponding .component.ts file that defines the logic and functionality specific to that component. The DataService.ts file handles the fetching and management of data from APIs or files. Additionally, the app-routing.module.ts file configures the navigation paths and specifies which components are rendered for each route.
+# Data Structures Used
+On the client-side, users, groups, and messages are represented as objects. Users are represented by an `id`, `email`, `password`, and `role`, which are stored in both local storage during sessions and in MongoDB on the server.  
+Groups represent different chat channels, with each group containing an `id` and a `name`. Messages include a `groupId`, `sender`, `messageContent`, `timestamp`, and an `imageUrl`. These messages are transmitted via Socket.IO in real-time and are then stored using MongoDB. On the server-side, MongoDB is used for storage, storing users, groups, and messages.
 
-## Node Server Architecture: Modules, Functions, Files, Global Variables
+---
 
-The Node server configuration was generated during the app setup, it uses Express to manage routes and serve static files. Cors is also included to manage cross origin requests.
+# Client and Server Responsibilities
+The client-side (Angular) is responsible for handling user interaction, sending and receiving chat messages, managing video calls, and updating the UI in real-time. It uses services to communicate with the back-end server through both HTTP requests and WebSockets.  
+The server-side (Node.js and MongoDB) handles API routes, real-time communication, and persistent data storage. It processes incoming HTTP requests for fetching and deleting messages and manages real-time message broadcasting through Socket.IO. MongoDB is used to store messages, groups, and users. The server also ensures that any changes in data, such as message deletion or updates, are synchronized across all clients.
 
-## Interaction Between Client and Server
+---
 
-When a user logs in, the angular component sends a request to the server to validate the log in details. The server checks the data and responds with navigation to the groups page or an error message Based on the login outcome the client updates the UI accordingly. SuperAdmins have access to additional features compared to group admins and regular users. For instance, if a SuperAdmin is logged in, each group will display a join button. If a regular user is logged in, they will see a request access button under Group 3. Furthermore, upon joining the group SuperAdmins and GroupAdmins have access to a wider range of features than the regular user who at this point in development can only see the back button.
+# Routes and API
+The server uses API routes to allow communication between the client and the database.  
+- The `/messages/:groupId` route (`GET`) fetches all messages for a specific group, returning them as a JSON array.
+- The `/messages/:messageId` route (`DELETE`) is used to delete a specific message, by its unique message ID.
+
+WebSocket-based events handle real-time communication. The `message` event handles the sending and receiving of messages in real-time, while `userJoined` and `userLeft` events broadcast changes in user presence within a group. These routes ensure that the client can interact with the database effectively and keep the chat application synchronized in real-time.
+
+---
+
+# Angular Architecture
+The Angular application is structured into components and services. The main chat interface is managed by the `Group2PageComponent`, which is responsible for rendering messages, sending chat data, and managing video calls. This component interacts with the `SocketService` to communicate with the server for real-time message updates. The `PeerService` manages video calls, and the `ImgUploadService` is responsible for handling image uploads. The application's routes ensure proper navigation between different group chat pages and facilitate role-based access for users.
+
+---
+
+# Client-Server Interaction
+The interaction between the client and server occurs through both WebSocket communication and REST API calls.  
+When a message is sent, the `SocketService` sends out the message to the server using Socket.IO. The server listens for the `message` event, stores the message in MongoDB, and broadcasts it back to all connected users. This makes sure that messages are displayed in real-time. Also, when a message is deleted, an HTTP DELETE request is sent to the server, which removes the message from MongoDB, and then updates the client-side UI by removing the message from chat.
+
+---
+
+# Testing
+Testing can be carried out by running `npx cypress run` in the root of the app, e.g. chat-system.
