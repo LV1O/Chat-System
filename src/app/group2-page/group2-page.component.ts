@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SocketService } from '../services/socket.service';
 import { PeerService } from '../services/peer.service';
-import { ImguploadService } from '../services/imgupload.service';
+import { ImguploadService } from '../services/imgupload.service'; 
 
 interface VideoElement {
   muted: boolean;
@@ -40,52 +40,48 @@ export class Group2PageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.username = localStorage.getItem('username');
     this.userRole = localStorage.getItem('role') || '';
-
+  
     console.log('Socket connection initialized for Group 2.');
     console.log(`Current user: ${this.username}, Role: ${this.userRole}`);
-
+  
+    // Fetch past messages for the group from MongoDB
     this.fetchMessages();
-
+  
+    // Emit the event that the user has joined the group
     this.socketService.emitUserJoined({ username: this.username!, group: 'group2' });
-
-    this.socketService.onUserJoined().subscribe((data: { username: string; group: string }) => {
-      console.log(`User ${data.username} has joined the group.`);
-    });
-
-    this.socketService.onUserLeft().subscribe((data: { username: string; group: string }) => {
-      console.log(`User ${data.username} has left the group.`);
-    });
-
+  
+    // Listen for real-time incoming chat messages
     this.socketService.receiveMessages().subscribe({
       next: (message) => {
-        console.log('Socket - Message received:', message);
-        this.messages.push(message); 
+        console.log('Real-time message received:', message);
+        this.messages.push(message); // Add the message to the list in real-time
       },
       error: (err) => {
-        console.error('Socket - Error receiving message:', err);
+        console.error('Error receiving real-time messages:', err);
       }
     });
-
-    this.socketService.peerID(this.ownID);
   }
+  
 
   ngOnDestroy(): void {
     console.log('User is leaving the channel.');
     this.socketService.emitUserLeft({ username: this.username!, group: 'group2' });
   }
 
+  // Fetch messages from the server when entering the chat
   fetchMessages() {
     this.socketService.getMessages('group2').subscribe({
       next: (messages) => {
-        console.log('Fetched messages from database:', messages);
+        console.log('Fetched messages from the database:', messages);
         this.messages = messages;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error fetching messages:', err);
       }
     });
   }
 
+  // Navigate back to group list
   back() {
     console.log('Navigating back to group list.');
     this.socketService.emitUserLeft({ username: this.username!, group: 'group2' });
@@ -101,31 +97,22 @@ export class Group2PageComponent implements OnInit, OnDestroy {
         timestamp: new Date(), 
         imageUrl: this.uploadedImageUrl || null
       };
-
-      console.log('Socket - Sending message:', messageData);
-      this.socketService.sendMessage(messageData);
-      this.message = ''; 
-      this.uploadedImageUrl = null; 
+  
+      console.log('Sending message:', messageData);
+      this.socketService.sendMessage(messageData);  // Real-time message sending
+  
+      // Add the message locally immediately
+      this.messages.push(messageData);
+  
+      this.message = '';  // Clear the message input
+      this.uploadedImageUrl = null;  // Reset uploaded image URL
     } else {
-      console.log('Empty message or missing username, message not sent.');
       alert('Please enter a message.');
     }
   }
+  
 
-  deleteMessage(message: any) {
-    if (confirm('Are you sure you want to delete this message?')) {
-      this.socketService.deleteMessage(message._id).subscribe({
-        next: (res) => {
-          console.log('Message deleted successfully:', res);
-          this.messages = this.messages.filter(m => m._id !== message._id);
-        },
-        error: (err: any) => {
-          console.error('Error deleting message:', err);
-        }
-      });
-    }
-  }
-
+  // Handle peer-to-peer call
   calling(peerID: string) {
     if (confirm(`Do you want to call ${peerID}?`)) {
       console.log(`Calling peer: ${peerID}`);
@@ -144,6 +131,7 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Add user's video to the grid
   addMyVideo(stream: MediaStream) {
     console.log('Adding own video to the video grid.');
     this.videos.push({
@@ -153,6 +141,7 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Add other user's video to the grid
   addOtherUserVideo(userId: string, stream: MediaStream) {
     console.log(`Adding video for peer: ${userId}`);
     this.videos.push({
@@ -162,6 +151,7 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Start video stream from the camera
   async streamCamera() {
     try {
       this.currentStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -174,6 +164,7 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Start screen sharing
   async streamScreen() {
     try {
       this.currentStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
@@ -186,10 +177,11 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // End the current call
   endCall() {
     if (this.currentCall) {
       console.log('Ending current call.');
-      this.currentCall.close(); 
+      this.currentCall.close();
       this.isCallStarted = false;
 
       if (this.currentStream) {
@@ -200,17 +192,35 @@ export class Group2PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Handle image file selection for profile picture
   onFileSelected(event: any) {
     this.selectedfile = event.target.files[0]; 
     console.log('Selected image file:', this.selectedfile);
   }
 
+  // Delete a message
+deleteMessage(msg: any) {
+  const messageId = msg._id;  // Ensure only the _id is passed
+  console.log('Attempting to delete message with ID:', messageId);  // Log the message ID
+  this.socketService.deleteMessage(messageId).subscribe({
+    next: (response) => {
+      console.log('Message deleted:', response);
+      this.messages = this.messages.filter((message) => message._id !== messageId);  // Remove from local list
+    },
+    error: (err) => {
+      console.error('Error deleting message:', err);
+    }
+  });
+}
+
+
+  // Handle image file selection for profile picture
   onProfileImageSelected(event: Event, msg: any) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
       const formData = new FormData();
-      formData.append('image', file); 
+      formData.append('image', file);
       formData.append('username', this.username!);
 
       console.log('Selected profile image file:', file);
@@ -219,7 +229,7 @@ export class Group2PageComponent implements OnInit, OnDestroy {
         (response: any) => {
           console.log('Profile image uploaded successfully:', response);
           msg.profileImageUrl = response.imageUrl;
-          this.messages = [...this.messages]; 
+          this.messages = [...this.messages];  // Update the messages array
         },
         (error: any) => {
           console.error('Error uploading profile image:', error);

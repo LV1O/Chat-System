@@ -78,11 +78,30 @@ nav .sidebar button {
 }
 
 .message-bubble {
-  display: inline-block;
+  display: inline-flex; /* Align the message content and the trashcan icon horizontally */
+  justify-content: space-between; /* Space between message content and trashcan */
+  align-items: center; /* Vertically align message content and trashcan */
   padding: 10px;
   border-radius: 15px;
   max-width: 60%;
   word-wrap: break-word;
+  position: relative;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  color: #f44336; /* Red color on hover */
+}
+
+.delete-button i {
+  font-size: 1.2em;
 }
 
 .message-sent .message-bubble {
@@ -114,6 +133,17 @@ nav .sidebar button {
 .chat-input-area {
   display: flex;
   gap: 10px;
+  justify-content: flex-end; /* Push the input area to the right */
+  max-width: 800px; /* Set a maximum width for the input area */
+  margin-right: 20px; /* Adjust margin to push it to the right */
+}
+
+.chat-input-area input[type="text"] {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px 20px;
+  width: 80%;
 }
 
 .icon-button {
@@ -150,4 +180,3 @@ nav .sidebar button {
   width: 100%; /* Makes image fill the box */
   height: auto; /* Maintains aspect ratio */
 }
-

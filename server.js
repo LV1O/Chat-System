@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const { MongoClient, ObjectId } = require('mongodb'); // Import ObjectId for message deletion
-const { PeerServer } = require('peer');  
+const { PeerServer } = require('peer');
 const path = require('path');
 
 // MongoDB connection
@@ -110,8 +110,9 @@ io.on('connection', (socket) => {
       });
 
       console.log('Message saved to MongoDB:', result.ops[0]);
-      io.emit('message', msg);
-      console.log('Message broadcasted');
+
+      // Emit the message to all clients, including the sender
+      io.emit('message', msg);  // This ensures all clients get the message in real-time
     } catch (err) {
       console.error('Error saving message to MongoDB:', err);
     }
@@ -121,6 +122,7 @@ io.on('connection', (socket) => {
     console.log(`User disconnected: ${socket.id}`);
   });
 });
+
 
 // Start the HTTPS server
 httpsServer.listen(PORT0, () => {
