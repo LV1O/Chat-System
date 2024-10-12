@@ -1,5 +1,4 @@
 <div class="container">
-
   <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
     <h1>Chat-App</h1>
     <div>
@@ -11,7 +10,7 @@
       <input type="password" name="password" id="psw" [(ngModel)]="password" required>
     </div>
     <button type="submit">Login</button>
-    <div *ngIf="errorMessage" class="alert">
+    <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
   </form>
