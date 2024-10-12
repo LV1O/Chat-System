@@ -74,6 +74,9 @@
             <div class="message-header">
               <strong>{{ msg.sender }}</strong>
               <small>{{ msg.timestamp | date:'short' }}</small>
+              <button class="icon-button delete-button" (click)="deleteMessage(msg)">
+                <i class="fas fa-trash"></i> <!-- Trashcan Icon to delete message -->
+              </button>
               <div class="profile-pic-box" (click)="fileInput.click()">
                 <img *ngIf="msg.profileImageUrl" [src]="msg.profileImageUrl" alt="Profile Image" class="profile-image" />
                 <input type="file" (change)="onProfileImageSelected($event, msg)" accept="image/*" hidden #fileInput />

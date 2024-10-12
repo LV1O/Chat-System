@@ -1,57 +1,87 @@
-const fs = require('fs'); // File system module to read/write files
-const https = require('https'); // HTTPS module to create a secure server
-const express = require('express'); // Express for handling HTTP requests
-const cors = require('cors'); // CORS for handling cross-origin requests
-const { Server } = require('socket.io'); // Socket.IO for real-time communication
-const { PeerServer } = require('peer'); // PeerJS server for video calls
-const path = require('path'); // Path module to work with file paths
-const { MongoClient } = require('mongodb'); // MongoDB client for storing image paths
-const formidable = require('formidable'); // Import formidable for file uploads
-const uploadRoutes = require('./server/routes/uploads'); // Import the upload routes
+const fs = require('fs');
+const https = require('https');
+const express = require('express');
+const cors = require('cors');
+const { Server } = require('socket.io');
+const { MongoClient, ObjectId } = require('mongodb'); // Import ObjectId for message deletion
+const { PeerServer } = require('peer');  
+const path = require('path');
 
 // MongoDB connection
-const mongoUrl = 'mongodb://localhost:27017';  
+const mongoUrl = 'mongodb://localhost:27017';
 const client = new MongoClient(mongoUrl);
-let db; // Database variable
+let db;
 
-// SSL options - paths to the SSL certificate and private key files
 const sslOptions = {
-  key: fs.readFileSync('key.pem'),     
-  cert: fs.readFileSync('cert.pem')    
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
 };
 
-// Define ports for the HTTPS and PeerJS servers
-const PORT0 = 3000; // HTTPS server for Socket.IO
-const PORT1 = 3001; // PeerJS server for handling video calls
+const PORT0 = 3000;  // For HTTPS and Socket.IO
+const PORT1 = 3001;  // For PeerJS
 
-// Initialize Express app
 const app = express();
-app.use(cors()); // Allow CORS for cross-origin requests
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
 client.connect().then(() => {
   console.log('Connected to MongoDB');
-  db = client.db('chat-app-db');  // Assign the connected database to db
+  db = client.db('chat-app-db');
 }).catch(err => {
   console.error('Failed to connect to MongoDB', err);
 });
 
-// Serve static images from the 'images' folder
+// Serve static images
 app.use('/images', express.static(path.join(__dirname, './images')));
 
-// Use upload routes under the '/api' endpoint
-app.use('/api', uploadRoutes); // Ensure this is set correctly
+// Route to fetch messages for a specific group
+app.get('/messages/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+  console.log(`Fetching messages for group: ${groupId}`);
 
-// Create HTTPS server using SSL options
+  try {
+    const messages = await db.collection('messages').find({ groupId }).toArray();
+    if (messages.length > 0) {
+      console.log(`Messages retrieved for group ${groupId}:`, messages);
+      res.status(200).json(messages);
+    } else {
+      console.log(`No messages found for group: ${groupId}`);
+      res.status(404).send('No messages found for this group');
+    }
+  } catch (err) {
+    console.error('Error fetching messages from MongoDB:', err);
+    res.status(500).send('Error retrieving messages');
+  }
+});
+
+// Route to delete a specific message by its ID
+app.delete('/messages/:messageId', async (req, res) => {
+  const { messageId } = req.params;
+  console.log(`Deleting message with ID: ${messageId}`);
+
+  try {
+    const result = await db.collection('messages').deleteOne({ _id: new ObjectId(messageId) });
+
+    if (result.deletedCount === 1) {
+      console.log(`Message with ID ${messageId} deleted.`);
+      res.status(200).json({ message: 'Message deleted successfully' });  // Return JSON instead of plain text
+    } else {
+      res.status(404).json({ message: 'Message not found' });
+    }
+  } catch (err) {
+    console.error('Error deleting message:', err);
+    res.status(500).json({ message: 'Error deleting message' });
+  }
+});
+
+
 const httpsServer = https.createServer(sslOptions, app);
 
-// Initialize Socket.IO on the HTTPS server
 const io = new Server(httpsServer, {
   cors: {
-    origin: "http://localhost:4200", // Allow requests from Angular frontend
-    methods: ["GET", "POST"], // Allow GET and POST requests
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"]
   }
 });
 
@@ -59,31 +89,45 @@ const io = new Server(httpsServer, {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
-  // Emit peerID when a user connects
   socket.emit('userid', socket.id);
 
-  // Handle peerID events and broadcast them to other users
-  socket.on('peerID', (peerID) => {
-    io.emit('peerID', peerID);
-    console.log(`Peer ID: ${peerID}`);
+  socket.on('userJoined', (data) => {
+    console.log(`User ${data.username} joined group ${data.group}`);
+    socket.broadcast.emit('userJoined', data);
   });
 
-  // Handle chat messages and broadcast to other users
-  socket.on('message', (msg) => {
-    io.emit('message', msg);
+  socket.on('message', async (msg) => {
     console.log(`Message received: ${msg}`);
+
+    try {
+      const messagesCollection = db.collection('messages');
+      const result = await messagesCollection.insertOne({
+        groupId: msg.groupId,
+        sender: msg.sender,
+        messageContent: msg.messageContent,
+        timestamp: msg.timestamp,
+        imageUrl: msg.imageUrl || null
+      });
+
+      console.log('Message saved to MongoDB:', result.ops[0]);
+      io.emit('message', msg);
+      console.log('Message broadcasted');
+    } catch (err) {
+      console.error('Error saving message to MongoDB:', err);
+    }
   });
 
-  // Handle user disconnection
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
   });
 });
 
-// Use the listen.js to start the server
-require('./listen')(httpsServer); // Ensure you pass the httpsServer
+// Start the HTTPS server
+httpsServer.listen(PORT0, () => {
+  console.log(`Server running on https://localhost:${PORT0}`);
+});
 
-// Start PeerJS server to handle video call connections
+// Start PeerJS server for video call connections
 PeerServer({ port: PORT1, path: '/', ssl: sslOptions }).listen(PORT1, 'localhost', () => {
   console.log(`PeerJS server running on https://localhost:${PORT1}`);
 });
